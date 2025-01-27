@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.Scanner;
+
 public class Orca {
     public static void main(String[] args) {
         String line = "----------------------------------------";
@@ -11,6 +14,15 @@ public class Orca {
 
         System.out.println(logo +"\n" + line);
         System.out.println("Hello! I'm Orca \nWhat can I do for you today?\n" + line);
-        System.out.println("Bye! Hope to see you again soon :)\n" + line);
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String input = scanner.nextLine();
+
+            if (input.equalsIgnoreCase("bye")) {
+                System.out.println(line + "\n" + "Bye! Hope to see you again soon :)\n" + line);
+                break;
+            }
+            System.out.println(line + "\n" + input + "\n" + line);
+        }
     }
 }
