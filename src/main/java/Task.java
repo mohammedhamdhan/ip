@@ -1,4 +1,4 @@
-public class ListEntry {
+public class Task {
     private String entry = "";
     private boolean isDone = false;
 

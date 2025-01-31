@@ -1,9 +1,9 @@
 public class TaskManager {
-    private final ListEntry[] tasks;
+    private final Task[] tasks;
     private int taskCount;
 
     public TaskManager(int maxSize) {
-        this.tasks = new ListEntry[maxSize];
+        this.tasks = new Task[maxSize];
         this.taskCount = 0;
     }
 
@@ -24,7 +24,7 @@ public class TaskManager {
             System.out.println(Orca.LINE + "\nError: Task list is full!\n" + Orca.LINE);
             return;
         }
-        ListEntry task = new ListEntry();
+        Task task = new Task();
         task.setEntry(taskDescription);
         tasks[taskCount++] = task;
         System.out.println(Orca.LINE + "\nAdded: " + task.getEntry() + "\n" + Orca.LINE);
