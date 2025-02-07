@@ -15,22 +15,34 @@ public class Orca {
                 break;
             }
 
-            switch (input.split(" ")[0].toLowerCase()) {
-            case "list":
-                taskManager.printTasks();
-                break;
-            case "mark":
-                taskManager.markTask(input);
-                break;
-            case "unmark":
-                taskManager.unmarkTask(input);
-                break;
-            default:
-                taskManager.addTask(input);
-                break;
-            }
+            commandGiven(input);
         }
         scanner.close();
+    }
+
+    private static void commandGiven(String input) {
+        switch (input.split(" ")[0].toLowerCase()) {
+        case "list":
+            taskManager.printTasks();
+            break;
+        case "mark":
+            taskManager.markTask(input);
+            break;
+        case "unmark":
+            taskManager.unmarkTask(input);
+            break;
+        case "todo":
+            taskManager.addTodoTask(input);
+            break;
+        case "deadline":
+            taskManager.addDeadlineTask(input);
+            break;
+        case "event":
+            taskManager.addEventTask(input);
+            break;
+        default:
+            taskManager.printInvalidInputMessage();
+        }
     }
 
     public static void main(String[] args) {

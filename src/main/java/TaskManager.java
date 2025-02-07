@@ -13,21 +13,54 @@ public class TaskManager {
             System.out.println("Nothing in your list yet!");
         } else {
             for (int i = 0; i < taskCount; i++) {
-                System.out.printf("  %d. [%s] %s%n", i + 1, tasks[i].getStatusIcon(), tasks[i].getEntry());
+                System.out.printf("  %d. %s [%s] %s%n", i + 1, tasks[i].getTaskType() ,tasks[i].getStatusIcon(), tasks[i].getEntry());
             }
         }
         System.out.println(Orca.LINE);
     }
 
-    public void addTask(String taskDescription) {
+    public void addTodoTask(String taskDescription) {
+        if (checkListFull()) return;
+        taskDescription = taskDescription.trim();
+        Todo newEntry = new Todo(taskDescription.substring(taskDescription.indexOf(" ") + 1));
+        tasks[taskCount++] = newEntry;
+        printAddedTodoTask(newEntry);
+    }
+
+    public void addDeadlineTask(String taskDescription) {
+        if (checkListFull()) return;
+        taskDescription = taskDescription.trim();
+        Deadline newEntry = new Deadline(taskDescription);
+        tasks[taskCount++] = newEntry;
+        printAddedDeadlineTask(newEntry, newEntry.getDeadline());
+    }
+
+    public void addEventTask(String taskDescription) {
+        if (checkListFull()) return;
+        taskDescription = taskDescription.trim();
+        Event newEntry = new Event(taskDescription);
+        tasks[taskCount++] = newEntry;
+        printAddedEventTask(newEntry, newEntry.getEvent_from(), newEntry.getEvent_to());
+    }
+
+    private boolean checkListFull() {
         if (taskCount >= tasks.length) {
             System.out.println(Orca.LINE + "\nError: Task list is full!\n" + Orca.LINE);
-            return;
+            return true;
         }
-        Task task = new Task();
-        task.setEntry(taskDescription);
-        tasks[taskCount++] = task;
-        System.out.println(Orca.LINE + "\nAdded: " + task.getEntry() + "\n" + Orca.LINE);
+        return false;
+    }
+
+    private static void printAddedTodoTask(Task task) {
+        System.out.println(Orca.LINE + "\nAwesome! I've added this task: \n\n" + (task.getTaskType() + "[ ]" + task.getEntry()).indent(5) + "\n" + Orca.LINE);
+    }
+
+    private static void printAddedDeadlineTask(Task task, String deadline) {
+        System.out.println(Orca.LINE + "\nAwesome! I've added this task: \n\n" + (task.getTaskType() + "[ ]" + task.getEntry() + " (by: " + deadline + ")").indent(5) + "\n" + Orca.LINE);
+    }
+
+    private static void printAddedEventTask(Task task, String from, String to) {
+        System.out.println(Orca.LINE + "\nAwesome! I've added this task: \n\n" + (task.getTaskType() + "[ ]" + task.getEntry() + " (from: " + from + "to: " + to + ")").indent(5) + "\n" + Orca.LINE);
     }
 
     public void markTask(String input) {
@@ -70,4 +103,9 @@ public class TaskManager {
     private void printInvalidIndexMessage() {
         System.out.println(Orca.LINE + "\nInvalid input! Please provide a valid index. Use 'list' to see your tasks.");
     }
+
+    public void printInvalidInputMessage() {
+        System.out.println(Orca.LINE + "\nInvalid input! Please provide a valid input. Use 'help' to see a list of commands.");
+    }
+
 }
