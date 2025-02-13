@@ -211,11 +211,11 @@ public class TaskManager {
     }
 
     private void printInvalidIndexMessage() {
-        System.out.println(Orca.LINE + "\nInvalid input! Please provide a valid index. Use 'list' to see your tasks.");
+        System.out.println(Orca.LINE + "\nInvalid input! Please provide a valid index. Use 'list' to see your tasks.\n" + Orca.LINE);
     }
 
     public void printInvalidInputMessage() {
-        System.out.println(Orca.LINE + "\nInvalid input! Please provide a valid input. Use 'help' to see a list of commands.");
+        System.out.println(Orca.LINE + "\nInvalid input! Please provide a valid input. Use 'help' to see a list of commands.\n" + Orca.LINE);
     }
 
     public void printHelpOptions(){
