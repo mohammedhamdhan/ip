@@ -40,6 +40,9 @@ public class Orca {
         case "event":
             taskManager.addEventTask(input);
             break;
+        case "help":
+            taskManager.printHelpOptions();
+            break;
         default:
             taskManager.printInvalidInputMessage();
         }

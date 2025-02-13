@@ -21,27 +21,92 @@ public class TaskManager {
 
     public void addTodoTask(String taskDescription) {
         if (checkListFull()) return;
-        taskDescription = taskDescription.trim();
-        Todo newEntry = new Todo(taskDescription.substring(taskDescription.indexOf(" ") + 1));
-        tasks[taskCount++] = newEntry;
-        printAddedTodoTask(newEntry);
+        try {
+            taskDescription = taskDescription.trim();
+            // Ensure there is a description after the command.
+            if (!taskDescription.contains(" ")) {
+                throw new IllegalArgumentException("The description of a todo cannot be empty.");
+            }
+            String description = taskDescription.substring(taskDescription.indexOf(" ") + 1).trim();
+            if (description.isEmpty()) {
+                throw new IllegalArgumentException("The description of a todo cannot be empty.");
+            }
+            Todo newEntry = new Todo(description);
+            tasks[taskCount++] = newEntry;
+            printAddedTodoTask(newEntry);
+        } catch (Exception e) {
+            System.out.println(Orca.LINE + "\nError adding todo task: " + e.getMessage() + "\n" + Orca.LINE);
+        }
     }
+
 
     public void addDeadlineTask(String taskDescription) {
         if (checkListFull()) return;
-        taskDescription = taskDescription.trim();
-        Deadline newEntry = new Deadline(taskDescription);
-        tasks[taskCount++] = newEntry;
-        printAddedDeadlineTask(newEntry, newEntry.getDeadline());
+        try {
+            taskDescription = taskDescription.trim();
+            // Ensure there's additional content after the command.
+            if (!taskDescription.contains(" ")) {
+                throw new IllegalArgumentException("The description of a deadline cannot be empty.");
+            }
+            String description = taskDescription.substring(taskDescription.indexOf(" ") + 1).trim();
+            if (description.isEmpty()) {
+                throw new IllegalArgumentException("The description of a deadline cannot be empty.");
+            }
+            // Count the number of '/' characters.
+            int slashCount = 0;
+            for (char c : taskDescription.toCharArray()) {
+                if (c == '/') {
+                    slashCount++;
+                }
+            }
+            if (slashCount > 1) {
+                throw new IllegalArgumentException("A deadline task should have only one '/' separator.");
+            }
+            if (slashCount < 1) {
+                throw new IllegalArgumentException("Deadline task missing '/' separator. Format should be: deadline <description> /by <time>.");
+            }
+            Deadline newEntry = new Deadline(taskDescription);
+            tasks[taskCount++] = newEntry;
+            printAddedDeadlineTask(newEntry, newEntry.getDeadline());
+        } catch (Exception e) {
+            System.out.println(Orca.LINE + "\nError adding deadline task: " + e.getMessage() + "\n" + Orca.LINE);
+        }
     }
+
 
     public void addEventTask(String taskDescription) {
         if (checkListFull()) return;
-        taskDescription = taskDescription.trim();
-        Event newEntry = new Event(taskDescription);
-        tasks[taskCount++] = newEntry;
-        printAddedEventTask(newEntry, newEntry.getEvent_from(), newEntry.getEvent_to());
+        try {
+            taskDescription = taskDescription.trim();
+            // Ensure there's additional content after the command.
+            if (!taskDescription.contains(" ")) {
+                throw new IllegalArgumentException("The description of an event cannot be empty.");
+            }
+            String description = taskDescription.substring(taskDescription.indexOf(" ") + 1).trim();
+            if (description.isEmpty()) {
+                throw new IllegalArgumentException("The description of an event cannot be empty.");
+            }
+            // Count the number of '/' characters.
+            int slashCount = 0;
+            for (char c : taskDescription.toCharArray()) {
+                if (c == '/') {
+                    slashCount++;
+                }
+            }
+            if (slashCount > 2) {
+                throw new IllegalArgumentException("An event task should not have more than two '/' separators.");
+            }
+            if (slashCount < 2) {
+                throw new IllegalArgumentException("An event task should contain exactly two '/' separators. Format: event <description> /from <start> /to <end>.");
+            }
+            Event newEntry = new Event(taskDescription);
+            tasks[taskCount++] = newEntry;
+            printAddedEventTask(newEntry, newEntry.getEvent_from(), newEntry.getEvent_to());
+        } catch (Exception e) {
+            System.out.println(Orca.LINE + "\nError adding event task: " + e.getMessage() + "\n" + Orca.LINE);
+        }
     }
+
 
     private boolean checkListFull() {
         if (taskCount >= tasks.length) {
@@ -106,6 +171,20 @@ public class TaskManager {
 
     public void printInvalidInputMessage() {
         System.out.println(Orca.LINE + "\nInvalid input! Please provide a valid input. Use 'help' to see a list of commands.");
+    }
+
+    public static void printHelpOptions(){
+        System.out.println(Orca.LINE);
+        System.out.println("Available Commands:");
+        System.out.println("  list                            - Display all tasks in your list.");
+        System.out.println("  mark <task number>              - Mark a task as done.");
+        System.out.println("  unmark <task number>            - Mark a task as not done.");
+        System.out.println("  todo <description>              - Add a new todo task.");
+        System.out.println("  deadline <description> /by <time>  - Add a new deadline task. (Ensure exactly one '/' is used)");
+        System.out.println("  event <description> /from <start time> /to <end time> - Add a new event task. (Ensure exactly two '/' are used)");
+        System.out.println("  help                            - Display this help message.");
+        System.out.println("  bye                             - Exit the application.");
+        System.out.println(Orca.LINE);
     }
 
 }
