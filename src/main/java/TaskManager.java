@@ -44,68 +44,107 @@ public class TaskManager {
         if (checkListFull()) return;
         try {
             taskDescription = taskDescription.trim();
-            // Ensure there's additional content after the command.
+
             if (!taskDescription.contains(" ")) {
                 throw new IllegalArgumentException("The description of a deadline cannot be empty.");
             }
-            String description = taskDescription.substring(taskDescription.indexOf(" ") + 1).trim();
+
+            String[] parts = taskDescription.split("/", -1);
+            if (parts.length != 2) {
+                throw new IllegalArgumentException(
+                        "A deadline task should contain exactly one '/' separator. " +
+                                "Format: deadline <description> /by <time>."
+                );
+            }
+
+            // Process the first part: it should start with "deadline" followed by the description.
+            String command = "deadline";
+            if (!parts[0].toLowerCase().startsWith(command)) {
+                throw new IllegalArgumentException("Deadline task must start with 'deadline'.");
+            }
+
+            String description = parts[0].substring(command.length()).trim();
             if (description.isEmpty()) {
                 throw new IllegalArgumentException("The description of a deadline cannot be empty.");
             }
-            // Count the number of '/' characters.
-            int slashCount = 0;
-            for (char c : taskDescription.toCharArray()) {
-                if (c == '/') {
-                    slashCount++;
-                }
+
+            String byPart = parts[1].trim();
+            if (!byPart.toLowerCase().startsWith("by")) {
+                throw new IllegalArgumentException("Deadline task should specify '/by <time>'.");
             }
-            if (slashCount > 1) {
-                throw new IllegalArgumentException("A deadline task should have only one '/' separator.");
+            String deadlineTime = byPart.substring("by".length()).trim();
+            if (deadlineTime.isEmpty()) {
+                throw new IllegalArgumentException("The deadline time cannot be empty.");
             }
-            if (slashCount < 1) {
-                throw new IllegalArgumentException("Deadline task missing '/' separator. Format should be: deadline <description> /by <time>.");
-            }
+
+            // If all validations pass, create the deadline task.
             Deadline newEntry = new Deadline(taskDescription);
             tasks[taskCount++] = newEntry;
-            printAddedDeadlineTask(newEntry, newEntry.getDeadline());
+            printAddedDeadlineTask(newEntry, deadlineTime);
+
         } catch (Exception e) {
             System.out.println(Orca.LINE + "\nError adding deadline task: " + e.getMessage() + "\n" + Orca.LINE);
         }
     }
 
 
+
     public void addEventTask(String taskDescription) {
         if (checkListFull()) return;
         try {
             taskDescription = taskDescription.trim();
-            // Ensure there's additional content after the command.
+
             if (!taskDescription.contains(" ")) {
                 throw new IllegalArgumentException("The description of an event cannot be empty.");
             }
-            String description = taskDescription.substring(taskDescription.indexOf(" ") + 1).trim();
+
+            String[] parts = taskDescription.split("/", -1);
+            if (parts.length != 3) {
+                throw new IllegalArgumentException(
+                        "An event task should contain exactly two '/' separators. " +
+                                "Format: event <description> /from <start> /to <end>."
+                );
+            }
+
+            String eventCommand = "event";
+            if (!parts[0].toLowerCase().startsWith(eventCommand)) {
+                throw new IllegalArgumentException("Event task must start with 'event'.");
+            }
+
+            String description = parts[0].substring(eventCommand.length()).trim();
             if (description.isEmpty()) {
                 throw new IllegalArgumentException("The description of an event cannot be empty.");
             }
-            // Count the number of '/' characters.
-            int slashCount = 0;
-            for (char c : taskDescription.toCharArray()) {
-                if (c == '/') {
-                    slashCount++;
-                }
+
+            String fromPart = parts[1].trim();
+            if (!fromPart.toLowerCase().startsWith("from")) {
+                throw new IllegalArgumentException("Event task should specify '/from <start>'.");
             }
-            if (slashCount > 2) {
-                throw new IllegalArgumentException("An event task should not have more than two '/' separators.");
+
+            String eventFrom = fromPart.substring("from".length()).trim();
+            if (eventFrom.isEmpty()) {
+                throw new IllegalArgumentException("The start time (from) cannot be empty.");
             }
-            if (slashCount < 2) {
-                throw new IllegalArgumentException("An event task should contain exactly two '/' separators. Format: event <description> /from <start> /to <end>.");
+
+            String toPart = parts[2].trim();
+            if (!toPart.toLowerCase().startsWith("to")) {
+                throw new IllegalArgumentException("Event task should specify '/to <end>'.");
             }
+
+            String eventTo = toPart.substring("to".length()).trim();
+            if (eventTo.isEmpty()) {
+                throw new IllegalArgumentException("The end time (to) cannot be empty.");
+            }
+
             Event newEntry = new Event(taskDescription);
             tasks[taskCount++] = newEntry;
-            printAddedEventTask(newEntry, newEntry.getEvent_from(), newEntry.getEvent_to());
+            printAddedEventTask(newEntry, eventFrom, eventTo);
+
         } catch (Exception e) {
             System.out.println(Orca.LINE + "\nError adding event task: " + e.getMessage() + "\n" + Orca.LINE);
         }
     }
+
 
 
     private boolean checkListFull() {
@@ -125,7 +164,7 @@ public class TaskManager {
     }
 
     private static void printAddedEventTask(Task task, String from, String to) {
-        System.out.println(Orca.LINE + "\nAwesome! I've added this task: \n\n" + (task.getTaskType() + "[ ]" + task.getEntry() + " (from: " + from + "to: " + to + ")").indent(5) + "\n" + Orca.LINE);
+        System.out.println(Orca.LINE + "\nAwesome! I've added this task: \n\n" + (task.getTaskType() + "[ ]" + task.getEntry() + " (from: " + from + " to: " + to + ")").indent(5) + "\n" + Orca.LINE);
     }
 
     public void markTask(String input) {
