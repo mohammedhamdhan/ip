@@ -1,4 +1,8 @@
-public class Deadline extends Task{
+package Orca.tasktype;
+
+import Orca.Task;
+
+public class Deadline extends Task {
     private  String deadlineDate;
 
     public Deadline(String description){

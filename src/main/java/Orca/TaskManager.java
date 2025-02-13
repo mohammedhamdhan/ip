@@ -1,3 +1,9 @@
+package Orca;
+
+import Orca.tasktype.Deadline;
+import Orca.tasktype.Event;
+import Orca.tasktype.Todo;
+
 public class TaskManager {
     private final Task[] tasks;
     private int taskCount;
@@ -212,7 +218,7 @@ public class TaskManager {
         System.out.println(Orca.LINE + "\nInvalid input! Please provide a valid input. Use 'help' to see a list of commands.");
     }
 
-    public static void printHelpOptions(){
+    public void printHelpOptions(){
         System.out.println(Orca.LINE);
         System.out.println("Available Commands:");
         System.out.println("  list                            - Display all tasks in your list.");

@@ -1,4 +1,8 @@
-public class Event extends Task{
+package Orca.tasktype;
+
+import Orca.Task;
+
+public class Event extends Task {
     private String event_from;
     private String event_to;
 

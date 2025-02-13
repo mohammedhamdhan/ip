@@ -1,3 +1,5 @@
+package Orca;
+
 import java.util.Scanner;
 
 public class Orca {
