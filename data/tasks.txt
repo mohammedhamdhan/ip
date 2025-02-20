@@ -1,0 +1,4 @@
+T | 0 | eat food
+D | 0 | eat brekkie   | 10am
+E | 0 | go for class   | 11   | 12
+T | 0 | read book

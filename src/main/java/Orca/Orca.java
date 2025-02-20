@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Orca {
     public static final String LINE = "----------------------------------------";
-    public static final TaskManager taskManager = new TaskManager(100);
+    public static final TaskManager taskManager = new TaskManager();
 
     public static void startOrcaManager() {
         Scanner scanner = new Scanner(System.in);
@@ -44,6 +44,9 @@ public class Orca {
             break;
         case "help":
             taskManager.printHelpOptions();
+            break;
+        case "delete":
+            taskManager.deleteTask(input);
             break;
         default:
             taskManager.printInvalidInputMessage();
