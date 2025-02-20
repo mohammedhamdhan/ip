@@ -232,7 +232,7 @@ public class TaskManager {
         System.out.println("  event <description> /from <start time> /to <end time> - Add a new event task. (Ensure exactly two '/' are used)");
         System.out.println("  help                            - Display this help message.");
         System.out.println("  bye                             - Exit the application.");
-        System.out.println(Orca.LINE);
+        System.out.println(Orca.LINE );
     }
 
     public void deleteTask(String input) {
