@@ -1,12 +1,18 @@
 package Orca;
 
+/**
+ * Handles parsing and validation of user input commands.
+ * This class provides methods to extract and validate different components of user commands,
+ * such as task descriptions, deadlines, and event times.
+ */
 public class Parser {
 
     /**
      * Extracts the command type from the input string.
+     * The command type is the first word of the input string.
      *
      * @param input The full input string.
-     * @return The command type.
+     * @return The command type in lowercase.
      */
     public static String parseCommandType(String input) {
         String[] parts = input.trim().split(" ", 2);
@@ -15,6 +21,7 @@ public class Parser {
 
     /**
      * Extracts the description from a todo command.
+     * The description is everything after the "todo" command word.
      *
      * @param input The full todo command.
      * @return The task description.
@@ -34,10 +41,11 @@ public class Parser {
 
     /**
      * Parses a deadline command and extracts relevant information.
+     * Expected format: "deadline <description> /by <time>"
      *
      * @param input The full deadline command.
      * @return A string array containing [description, deadline].
-     * @throws IllegalArgumentException If the format is incorrect.
+     * @throws IllegalArgumentException If the format is incorrect or any part is missing.
      */
     public static String[] parseDeadlineCommand(String input) throws IllegalArgumentException {
         input = input.trim();
@@ -72,10 +80,11 @@ public class Parser {
 
     /**
      * Parses an event command and extracts relevant information.
+     * Expected format: "event <description> /from <start> /to <end>"
      *
      * @param input The full event command.
      * @return A string array containing [description, from, to].
-     * @throws IllegalArgumentException If the format is incorrect.
+     * @throws IllegalArgumentException If the format is incorrect or any part is missing.
      */
     public static String[] parseEventCommand(String input) throws IllegalArgumentException {
         input = input.trim();
@@ -120,6 +129,7 @@ public class Parser {
 
     /**
      * Extracts the task index from mark, unmark, or delete commands.
+     * The index should be a positive integer.
      *
      * @param input The full command string.
      * @return The zero-based index of the task.
@@ -137,6 +147,28 @@ public class Parser {
         } catch (NumberFormatException e) {
             throw new NumberFormatException("'" + words[1] + "' is not a valid task number.");
         }
+    }
+
+    /**
+     * Extracts the search keyword from a find command.
+     * The keyword is everything after the "find" command word.
+     *
+     * @param input The full find command.
+     * @return The search keyword.
+     * @throws IllegalArgumentException If the keyword is empty.
+     */
+    public static String parseSearchKeyword(String input) throws IllegalArgumentException {
+        input = input.trim();
+        if (!input.contains(" ")) {
+            throw new IllegalArgumentException("Please provide a search keyword.");
+        }
+        
+        String keyword = input.substring(input.indexOf(" ") + 1).trim();
+        if (keyword.isEmpty()) {
+            throw new IllegalArgumentException("The search keyword cannot be empty.");
+        }
+        
+        return keyword;
     }
     
     // Helper methods
@@ -156,26 +188,5 @@ public class Parser {
         if (description.isEmpty()) {
             throw new IllegalArgumentException("The description of a " + commandType + " cannot be empty.");
         }
-    }
-    
-    /**
-     * Extracts the search keyword from a find command.
-     *
-     * @param input The full find command.
-     * @return The search keyword.
-     * @throws IllegalArgumentException If the keyword is empty.
-     */
-    public static String parseSearchKeyword(String input) throws IllegalArgumentException {
-        input = input.trim();
-        if (!input.contains(" ")) {
-            throw new IllegalArgumentException("Please provide a search keyword.");
-        }
-        
-        String keyword = input.substring(input.indexOf(" ") + 1).trim();
-        if (keyword.isEmpty()) {
-            throw new IllegalArgumentException("The search keyword cannot be empty.");
-        }
-        
-        return keyword;
     }
 } 
