@@ -1,4 +1,4 @@
-T | 0 | eat food
-D | 0 | eat brekkie   | 10am
-E | 0 | go for class   | 11   | 12
-T | 0 | read book
+D | 1 | eat brekkie          | 10am
+T | 1 | read book
+D | 1 | read dictionary       | 10pm
+E | 1 | go jogging   | 4pm   | 6pm

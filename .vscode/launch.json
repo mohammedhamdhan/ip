@@ -9,7 +9,7 @@
       "type": "lldb",
       "request": "launch",
       "name": "Debug",
-      "program": "${workspaceFolder}/<executable file>",
+      "program": "${workspaceFolder}/src/main/java/Orca/Orca.java",
       "args": [],
       "cwd": "${workspaceFolder}"
     }

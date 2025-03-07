@@ -3,17 +3,22 @@ package Orca;
 import java.util.Scanner;
 
 public class Orca {
-    public static final String LINE = "----------------------------------------";
-    public static final TaskManager taskManager = new TaskManager();
+    private static Ui ui;
+    private static TaskManager taskManager;
 
     public static void startOrcaManager() {
+        ui = new Ui();
+        taskManager = new TaskManager(ui);
+        
+        ui.showWelcomeMessage();
+        
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             String input = scanner.nextLine().trim();
 
             if (input.equalsIgnoreCase("bye")) {
-                System.out.println(LINE + "\nBye! Hope to see you again soon :)\n" + LINE);
+                ui.showGoodbyeMessage();
                 break;
             }
 
@@ -23,7 +28,9 @@ public class Orca {
     }
 
     private static void commandGiven(String input) {
-        switch (input.split(" ")[0].toLowerCase()) {
+        String commandType = Parser.parseCommandType(input);
+        
+        switch (commandType) {
         case "list":
             taskManager.printTasks();
             break;
@@ -54,15 +61,6 @@ public class Orca {
     }
 
     public static void main(String[] args) {
-        String logo =
-                "  ___    ____     ____      _   \n"
-                        + " / _ \\  |  _ \\   / ___|    / \\ \n"
-                        + "| | | | | |_) | | |       / _ \\ \n"
-                        + "| |_| | |  _ <  | |___   / ___ \\ \n"
-                        + " \\___/  |_| \\_\\  \\____| /_/   \\_\\\n";
-
-        System.out.println(logo + "\n" + LINE);
-        System.out.println("Hello! I'm Orca \nWhat can I do for you today?\n" + LINE);
         startOrcaManager();
     }
 }
