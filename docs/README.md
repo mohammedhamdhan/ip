@@ -194,11 +194,12 @@ Orca automatically saves your tasks after every change you make. Here's what you
 ### 📊 Data Format
 
 Each task type is saved with a specific format:
-| Type | Format |
-|------|---------|
-| Todo | `T\|isDone\|description` |
+
+| Type     | Format                             |
+| -------- | ---------------------------------- |
+| Todo     | `T\|isDone\|description`           |
 | Deadline | `D\|isDone\|description\|deadline` |
-| Event | `E\|isDone\|description\|from\|to` |
+| Event    | `E\|isDone\|description\|from\|to` |
 
 ### 🔧 Data Recovery
 
@@ -215,13 +216,11 @@ If the data file is corrupted, Orca will:
 | Symbol       | Meaning                         |
 | ------------ | ------------------------------- |
 | `UPPER_CASE` | Parameter to be supplied by you |
-| `[optional]` | Optional parameter              |
 | `/flag`      | Command flag                    |
 
 Examples:
 
 - In `todo DESCRIPTION`, replace `DESCRIPTION` with your task
-- In `find [KEYWORD]`, `KEYWORD` is optional
 - Use `/by`, `/from`, `/to` to specify times
 
 ---
@@ -320,13 +319,6 @@ Here are some common error messages and how to fix them:
 **Q: Can I move my tasks to another computer?**
 
 - ✅ Yes, just copy the `data/tasks.txt` file to the same location on the new computer.
-
-### 🔧 Data Recovery
-
-**Q: What happens if the data file is corrupted?**
-
-- ✅ Orca will skip corrupted entries and load the valid ones
-- ⚠️ Warning messages will be shown for corrupted data
 
 ### 📝 Task Descriptions
 
