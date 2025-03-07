@@ -164,4 +164,24 @@ public class TaskList {
     public boolean isValidIndex(int index) {
         return index >= 0 && index < tasks.size();
     }
+    
+    /**
+     * Finds tasks containing the given keyword in their description.
+     * The search is case-insensitive.
+     * 
+     * @param keyword The keyword to search for.
+     * @return A list of tasks matching the keyword.
+     */
+    public ArrayList<Task> findTasksByKeyword(String keyword) {
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+        String lowercaseKeyword = keyword.toLowerCase();
+        
+        for (Task task : tasks) {
+            if (task.getEntry().toLowerCase().contains(lowercaseKeyword)) {
+                matchingTasks.add(task);
+            }
+        }
+        
+        return matchingTasks;
+    }
 } 

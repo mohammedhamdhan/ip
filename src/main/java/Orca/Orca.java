@@ -55,6 +55,9 @@ public class Orca {
         case "delete":
             taskManager.deleteTask(input);
             break;
+        case "find":
+            taskManager.findTasks(input);
+            break;
         default:
             taskManager.printInvalidInputMessage();
         }
