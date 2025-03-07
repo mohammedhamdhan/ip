@@ -74,17 +74,17 @@ public class Storage {
         // Add task type and completion status.
         // For example, "[T]" becomes "T".
         sb.append(task.getTaskType().replace("[", "").replace("]", ""))
-                .append(" | ")
+                .append("|")
                 .append(task.isDone() ? "1" : "0")
-                .append(" | ")
-                .append(task.getEntry());
+                .append("|")
+                .append(task.getEntry().trim());
 
         // Add additional details for Deadline or Event tasks.
         if (task instanceof Deadline) {
-            sb.append(" | ").append(((Deadline) task).getDeadline());
+            sb.append("|").append(((Deadline) task).getDeadline().trim());
         } else if (task instanceof Event) {
-            sb.append(" | ").append(((Event) task).getEvent_from())
-                    .append(" | ").append(((Event) task).getEvent_to());
+            sb.append("|").append(((Event) task).getEvent_from().trim())
+                    .append("|").append(((Event) task).getEvent_to().trim());
         }
 
         return sb.toString();
@@ -92,14 +92,14 @@ public class Storage {
 
     // Parses a line from the data file and returns a Task.
     private Task parseTaskFromLine(String line) {
-        String[] parts = line.split(" \\| ");
+        String[] parts = line.split("\\|");
         if (parts.length < 3) {
             throw new IllegalArgumentException("Invalid task format");
         }
 
-        String type = parts[0];
-        boolean isDone = "1".equals(parts[1]);
-        String description = parts[2];
+        String type = parts[0].trim();
+        boolean isDone = "1".equals(parts[1].trim());
+        String description = parts[2].trim();
         Task task;
 
         switch (type) {
@@ -111,14 +111,14 @@ public class Storage {
                 throw new IllegalArgumentException("Invalid deadline format");
             }
             // Construct the deadline command string.
-            task = new Deadline("deadline " + description + " /by " + parts[3]);
+            task = new Deadline("deadline " + description + " /by " + parts[3].trim());
             break;
         case "E":
             if (parts.length < 5) {
                 throw new IllegalArgumentException("Invalid event format");
             }
             // Construct the event command string.
-            task = new Event("event " + description + " /from " + parts[3] + " /to " + parts[4]);
+            task = new Event("event " + description + " /from " + parts[3].trim() + " /to " + parts[4].trim());
             break;
         default:
             throw new IllegalArgumentException("Unknown task type: " + type);

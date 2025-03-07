@@ -3,6 +3,8 @@ package Orca;
 import Orca.tasktype.Deadline;
 import Orca.tasktype.Event;
 
+import java.util.ArrayList;
+
 public class Ui {
     public static final String LINE = "----------------------------------------";
     
@@ -107,8 +109,43 @@ public class Ui {
         System.out.println("  deadline <description> /by <time>  - Add a new deadline task. (Ensure exactly one '/' is used)");
         System.out.println("  event <description> /from <start time> /to <end time> - Add a new event task. (Ensure exactly two '/' are used)");
         System.out.println("  delete <task number>            - Delete a task.");
+        System.out.println("  find <keyword>                  - Find tasks matching the keyword.");
         System.out.println("  help                            - Display this help message.");
         System.out.println("  bye                             - Exit the application.");
+        System.out.println(LINE);
+    }
+    
+    /**
+     * Shows the search results to the user.
+     *
+     * @param matchingTasks The list of tasks that match the search criteria.
+     * @param keyword The keyword that was searched for.
+     */
+    public void showSearchResults(ArrayList<Task> matchingTasks, String keyword) {
+        System.out.println(LINE);
+        if (matchingTasks.isEmpty()) {
+            System.out.println("No matching tasks found for: " + keyword);
+        } else {
+            System.out.println(" Here are the matching tasks in your list:\n");
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                Task task = matchingTasks.get(i);
+                StringBuilder taskStr = new StringBuilder();
+                taskStr.append(String.format(" %d.[%s][%s] %s", 
+                    i + 1,
+                    task.getTaskType().replace("[", "").replace("]", ""),
+                    task.getStatusIcon(),
+                    task.getEntry()));
+                
+                if (task instanceof Deadline) {
+                    taskStr.append(" (by: ").append(((Deadline) task).getDeadline()).append(")");
+                } else if (task instanceof Event) {
+                    taskStr.append(" (from: ").append(((Event) task).getEvent_from())
+                           .append(" to: ").append(((Event) task).getEvent_to()).append(")");
+                }
+                
+                System.out.println(taskStr.toString());
+            }
+        }
         System.out.println(LINE);
     }
 } 

@@ -157,4 +157,25 @@ public class Parser {
             throw new IllegalArgumentException("The description of a " + commandType + " cannot be empty.");
         }
     }
+    
+    /**
+     * Extracts the search keyword from a find command.
+     *
+     * @param input The full find command.
+     * @return The search keyword.
+     * @throws IllegalArgumentException If the keyword is empty.
+     */
+    public static String parseSearchKeyword(String input) throws IllegalArgumentException {
+        input = input.trim();
+        if (!input.contains(" ")) {
+            throw new IllegalArgumentException("Please provide a search keyword.");
+        }
+        
+        String keyword = input.substring(input.indexOf(" ") + 1).trim();
+        if (keyword.isEmpty()) {
+            throw new IllegalArgumentException("The search keyword cannot be empty.");
+        }
+        
+        return keyword;
+    }
 } 

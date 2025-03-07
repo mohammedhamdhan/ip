@@ -3,6 +3,7 @@ package Orca;
 import Orca.tasktype.Deadline;
 import Orca.tasktype.Event;
 import Orca.tasktype.Todo;
+import java.util.ArrayList;
 
 public class TaskManager {
     private TaskList taskList;
@@ -119,6 +120,21 @@ public class TaskManager {
             }
         } catch (Exception e) {
             ui.showErrorMessage("Error deleting task: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Finds tasks that match the given keyword in the task description.
+     *
+     * @param input The search command input.
+     */
+    public void findTasks(String input) {
+        try {
+            String keyword = Parser.parseSearchKeyword(input);
+            ArrayList<Task> matchingTasks = taskList.findTasksByKeyword(keyword);
+            ui.showSearchResults(matchingTasks, keyword);
+        } catch (Exception e) {
+            ui.showErrorMessage("Error searching tasks: " + e.getMessage());
         }
     }
 }
